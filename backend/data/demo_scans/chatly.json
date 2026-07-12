@@ -1,0 +1,64 @@
+{
+  "url": "https://www.chatly-demo.app",
+  "scan_id": "demo-chatly",
+  "site_name": "chatly-demo.app",
+  "policy_source_url": "https://www.chatly-demo.app/legal/privacy",
+  "claims": [
+    {"claim": "Messages are not scanned for ad targeting purposes", "category": "advertising", "confidence": "explicit"},
+    {"claim": "Does not share contact lists with third parties", "category": "third-party sharing", "confidence": "explicit"},
+    {"claim": "Location is only used for the optional 'nearby friends' feature", "category": "location", "confidence": "explicit"},
+    {"claim": "Retains deleted messages for no more than 14 days for abuse investigation", "category": "data retention", "confidence": "explicit"},
+    {"claim": "Service is not directed at children under 13", "category": "children's data", "confidence": "explicit"}
+  ],
+  "captured_domains": [
+    {"domain": "chatly-demo.app", "request_count": 58, "resource_type": "document"},
+    {"domain": "cloudfront.net", "request_count": 14, "resource_type": "script"},
+    {"domain": "segment.io", "request_count": 7, "resource_type": "xhr"},
+    {"domain": "mixpanel.com", "request_count": 5, "resource_type": "xhr"},
+    {"domain": "amazonaws.com", "request_count": 22, "resource_type": "xhr"},
+    {"domain": "gstatic.com", "request_count": 3, "resource_type": "font"}
+  ],
+  "classified_domains": [
+    {"domain": "chatly-demo.app", "category": "first-party", "source": "blocklist", "request_count": 58},
+    {"domain": "cloudfront.net", "category": "cdn", "source": "blocklist", "request_count": 14},
+    {"domain": "segment.io", "category": "analytics", "source": "blocklist", "request_count": 7},
+    {"domain": "mixpanel.com", "category": "analytics", "source": "blocklist", "request_count": 5},
+    {"domain": "amazonaws.com", "category": "infra", "source": "blocklist", "request_count": 22},
+    {"domain": "gstatic.com", "category": "cdn", "source": "blocklist", "request_count": 3}
+  ],
+  "verdicts": [
+    {
+      "claim": "Messages are not scanned for ad targeting purposes",
+      "verdict": "confirmed",
+      "evidence": ["segment.io (analytics, classified via blocklist)", "mixpanel.com (analytics, classified via blocklist)"],
+      "explanation": "No ad-tech domains were contacted anywhere in the captured traffic; only product-analytics endpoints appear, which is consistent with the claim."
+    },
+    {
+      "claim": "Does not share contact lists with third parties",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Contact-list sharing cannot be confirmed or denied from domain-level traffic alone, since analytics calls could carry hashed identifiers not visible at this layer."
+    },
+    {
+      "claim": "Location is only used for the optional 'nearby friends' feature",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "No location-specific network calls were observed during this scan window, so the claim's scope cannot be independently checked."
+    },
+    {
+      "claim": "Retains deleted messages for no more than 14 days for abuse investigation",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Data-retention windows are a backend/process claim, not observable via traffic capture."
+    },
+    {
+      "claim": "Service is not directed at children under 13",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Audience targeting is not observable from network traffic."
+    }
+  ],
+  "pipeline_stage": "complete",
+  "errors": [],
+  "trust_score": {"confirmed": 1, "contradicted": 0, "unverifiable": 4}
+}

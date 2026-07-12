@@ -1,0 +1,66 @@
+{
+  "url": "https://www.fittrack-demo.io",
+  "scan_id": "demo-fittrack",
+  "site_name": "fittrack-demo.io",
+  "policy_source_url": "https://www.fittrack-demo.io/privacy",
+  "claims": [
+    {"claim": "Health and fitness data is never sold or shared with advertisers", "category": "advertising", "confidence": "explicit"},
+    {"claim": "Precise GPS location is only shared with your chosen workout partners", "category": "location", "confidence": "explicit"},
+    {"claim": "Does not share workout data with third-party analytics platforms", "category": "analytics/tracking", "confidence": "explicit"},
+    {"claim": "Data from users under 13 is deleted immediately upon detection", "category": "children's data", "confidence": "explicit"},
+    {"claim": "Workout history is retained indefinitely unless the user requests deletion", "category": "data retention", "confidence": "explicit"}
+  ],
+  "captured_domains": [
+    {"domain": "fittrack-demo.io", "request_count": 37, "resource_type": "document"},
+    {"domain": "googleadservices.com", "request_count": 5, "resource_type": "script"},
+    {"domain": "facebook.net", "request_count": 4, "resource_type": "script"},
+    {"domain": "hotjar.com", "request_count": 6, "resource_type": "xhr"},
+    {"domain": "amplitude.com", "request_count": 8, "resource_type": "xhr"},
+    {"domain": "cloudfront.net", "request_count": 10, "resource_type": "image"},
+    {"domain": "tiktok.com", "request_count": 2, "resource_type": "script"}
+  ],
+  "classified_domains": [
+    {"domain": "fittrack-demo.io", "category": "first-party", "source": "blocklist", "request_count": 37},
+    {"domain": "googleadservices.com", "category": "ad-tech", "source": "blocklist", "request_count": 5},
+    {"domain": "facebook.net", "category": "social-tracking", "source": "blocklist", "request_count": 4},
+    {"domain": "hotjar.com", "category": "analytics", "source": "blocklist", "request_count": 6},
+    {"domain": "amplitude.com", "category": "analytics", "source": "blocklist", "request_count": 8},
+    {"domain": "cloudfront.net", "category": "cdn", "source": "blocklist", "request_count": 10},
+    {"domain": "tiktok.com", "category": "social-tracking", "source": "model", "request_count": 2}
+  ],
+  "verdicts": [
+    {
+      "claim": "Health and fitness data is never sold or shared with advertisers",
+      "verdict": "contradicted",
+      "evidence": ["googleadservices.com (ad-tech, classified via blocklist)"],
+      "explanation": "A request to a Google ad-serving domain fires during the session, directly conflicting with the claim that fitness data is never shared with advertisers."
+    },
+    {
+      "claim": "Precise GPS location is only shared with your chosen workout partners",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "No location-transmitting domains were distinguishable from general infrastructure traffic in this capture window."
+    },
+    {
+      "claim": "Does not share workout data with third-party analytics platforms",
+      "verdict": "contradicted",
+      "evidence": ["hotjar.com (analytics, classified via blocklist)", "amplitude.com (analytics, classified via blocklist)"],
+      "explanation": "Two third-party analytics platforms receive traffic during a normal session, directly conflicting with this claim."
+    },
+    {
+      "claim": "Data from users under 13 is deleted immediately upon detection",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Age-verification and deletion processes are not observable from network traffic."
+    },
+    {
+      "claim": "Workout history is retained indefinitely unless the user requests deletion",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Retention policy claims describe backend storage behavior, which traffic capture cannot verify."
+    }
+  ],
+  "pipeline_stage": "complete",
+  "errors": [],
+  "trust_score": {"confirmed": 0, "contradicted": 2, "unverifiable": 3}
+}

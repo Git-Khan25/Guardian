@@ -1,0 +1,84 @@
+{
+  "url": "https://www.shopnest-demo.com",
+  "scan_id": "demo-shopnest",
+  "site_name": "shopnest-demo.com",
+  "policy_source_url": "https://www.shopnest-demo.com/privacy-policy",
+  "claims": [
+    {"claim": "Does not share data with third-party advertisers", "category": "advertising", "confidence": "explicit"},
+    {"claim": "Does not sell personal information to data brokers", "category": "third-party sharing", "confidence": "explicit"},
+    {"claim": "Uses cookies only for cart functionality, not cross-site tracking", "category": "analytics/tracking", "confidence": "explicit"},
+    {"claim": "Does not knowingly collect data from children under 13", "category": "children's data", "confidence": "explicit"},
+    {"claim": "Deletes account data within 30 days of account closure", "category": "data retention", "confidence": "implied"},
+    {"claim": "Does not access precise device location without consent", "category": "location", "confidence": "explicit"},
+    {"claim": "Does not use analytics tools to build cross-site user profiles", "category": "analytics/tracking", "confidence": "implied"}
+  ],
+  "captured_domains": [
+    {"domain": "shopnest-demo.com", "request_count": 42, "resource_type": "document"},
+    {"domain": "doubleclick.net", "request_count": 6, "resource_type": "script"},
+    {"domain": "googlesyndication.com", "request_count": 4, "resource_type": "script"},
+    {"domain": "google-analytics.com", "request_count": 9, "resource_type": "xhr"},
+    {"domain": "facebook.net", "request_count": 3, "resource_type": "script"},
+    {"domain": "criteo.com", "request_count": 2, "resource_type": "image"},
+    {"domain": "cloudflare.com", "request_count": 11, "resource_type": "script"},
+    {"domain": "adsrvr.org", "request_count": 3, "resource_type": "xhr"},
+    {"domain": "gstatic.com", "request_count": 5, "resource_type": "font"}
+  ],
+  "classified_domains": [
+    {"domain": "shopnest-demo.com", "category": "first-party", "source": "blocklist", "request_count": 42},
+    {"domain": "doubleclick.net", "category": "ad-tech", "source": "blocklist", "request_count": 6},
+    {"domain": "googlesyndication.com", "category": "ad-tech", "source": "blocklist", "request_count": 4},
+    {"domain": "google-analytics.com", "category": "analytics", "source": "blocklist", "request_count": 9},
+    {"domain": "facebook.net", "category": "social-tracking", "source": "blocklist", "request_count": 3},
+    {"domain": "criteo.com", "category": "ad-tech", "source": "blocklist", "request_count": 2},
+    {"domain": "cloudflare.com", "category": "cdn", "source": "blocklist", "request_count": 11},
+    {"domain": "adsrvr.org", "category": "ad-tech", "source": "model", "request_count": 3},
+    {"domain": "gstatic.com", "category": "cdn", "source": "blocklist", "request_count": 5}
+  ],
+  "verdicts": [
+    {
+      "claim": "Does not share data with third-party advertisers",
+      "verdict": "contradicted",
+      "evidence": ["doubleclick.net (ad-tech, classified via blocklist)", "criteo.com (ad-tech, classified via blocklist)"],
+      "explanation": "Traffic shows requests to two known ad-tech domains, including doubleclick.net, within seconds of page load — directly conflicting with the no-third-party-advertising claim."
+    },
+    {
+      "claim": "Does not sell personal information to data brokers",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Domain-level traffic alone cannot confirm whether data is sold to brokers versus merely shared for ad delivery; no domain in this scan is classified specifically as a data-broker endpoint."
+    },
+    {
+      "claim": "Uses cookies only for cart functionality, not cross-site tracking",
+      "verdict": "contradicted",
+      "evidence": ["google-analytics.com (analytics, classified via blocklist)", "facebook.net (social-tracking, classified via blocklist)"],
+      "explanation": "Requests to both an analytics domain and a social-tracking pixel indicate cookies are used well beyond cart functionality."
+    },
+    {
+      "claim": "Does not knowingly collect data from children under 13",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Age-related data handling is not observable from network traffic alone; no evidence in this scan speaks to this claim either way."
+    },
+    {
+      "claim": "Deletes account data within 30 days of account closure",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "Data-retention timelines are not observable via traffic capture; would require a documentation or process audit."
+    },
+    {
+      "claim": "Does not access precise device location without consent",
+      "verdict": "unverifiable",
+      "evidence": [],
+      "explanation": "No geolocation-related network calls were observed in this scan, but absence of evidence is not confirmation of the claim."
+    },
+    {
+      "claim": "Does not use analytics tools to build cross-site user profiles",
+      "verdict": "contradicted",
+      "evidence": ["adsrvr.org (ad-tech, classified via model)"],
+      "explanation": "A request to a domain classified as ad-tech through the extended pattern check (not on the static blocklist) indicates cross-site profiling infrastructure is active."
+    }
+  ],
+  "pipeline_stage": "complete",
+  "errors": [],
+  "trust_score": {"confirmed": 0, "contradicted": 3, "unverifiable": 4}
+}
