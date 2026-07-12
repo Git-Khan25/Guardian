@@ -182,11 +182,6 @@ npm run dev
 cd /workspaces/Guardian/backend
 ```
 
-**Verify you're on the clean (no-AMD) code:**
-```bash
-grep -i "amd" pipeline/domain_classifier.py
-```
-Should return nothing. If it does, stop — the repo needs re-syncing before continuing.
 
 **Create the env file (skip `.env.example` — it doesn't reliably survive drag-and-drop):**
 ```bash
