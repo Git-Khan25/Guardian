@@ -173,3 +173,98 @@ npm run dev
   behavioral traffic analysis.
 - The bundled blocklist is a trimmed sample, not a full production-scale
   tracker list.
+
+  Here's the complete, clean run-through — every fix we found along the way baked in, in the right order. Follow this top to bottom in a  Codespace terminal session.
+
+## Terminal 1 — Backend
+
+```bash
+cd /workspaces/Guardian/backend
+```
+
+**Verify you're on the clean (no-AMD) code:**
+```bash
+grep -i "amd" pipeline/domain_classifier.py
+```
+Should return nothing. If it does, stop — the repo needs re-syncing before continuing.
+
+**Create the env file (skip `.env.example` — it doesn't reliably survive drag-and-drop):**
+```bash
+cat > .env << 'EOF'
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-2.0-flash
+
+BACKEND_PORT=8000
+FRONTEND_PORT=5173
+EOF
+```
+
+**Add your real keys:**
+```bash
+nano .env
+```
+Fill in `OPENAI_API_KEY=` and `GEMINI_API_KEY=` with real values. Save: `Ctrl+O` → Enter → `Ctrl+X`.
+
+**Install everything:**
+```bash
+pip install -r requirements.txt --break-system-packages
+python -m playwright install chromium
+sudo python -m playwright install-deps chromium
+```
+
+**Start the server:**
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Leave this running. You should see `Application startup complete.` with no errors.
+
+---
+
+## Ports tab — make backend public
+
+Bottom panel → **Ports** tab → right-click port `8000` → **Port Visibility → Public** → right-click again → **Copy Local Address**. Save that URL — you need it next.
+
+---
+
+## Terminal 2 — Frontend (open a new terminal)
+
+```bash
+cd /workspaces/Guardian/frontend
+npm install
+```
+
+**Set the backend URL — no trailing slash, this matters:**
+```bash
+echo "VITE_API_URL=https://YOUR-COPIED-URL-HERE.app.github.dev" > .env
+cat .env
+```
+Confirm the printed line has **no `/` at the end**.
+
+**Start it:**
+```bash
+npm run dev -- --host
+```
+
+---
+
+## Open the app
+
+Ports tab → port `5173` → **Open in Browser**. This opens a fresh tab automatically, which matters — a stale tab won't pick up the env change.
+
+Click a preset card (ShopNest, Chatly, or FitTrack) first — that's your no-keys-needed sanity check.
+
+---
+
+## If a demo card still 404s
+
+Switch to the backend terminal and watch the log line for that click:
+- `GET /demo/shopnest` (single slash) + `200 OK` → working
+- `GET //demo/shopnest` (double slash) + `404` → `.env` still has a trailing slash or the browser tab is stale — recheck `cat .env` in the frontend folder and open a genuinely new tab
+
+## To stop everything later
+
+`Ctrl+C` in both terminals.
